@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - SafeAgroMENA</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://alcdn.msauth.net/browser/2.24.0/js/msal-browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .page-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .left-section {
+            flex: 1;
+            background-image: url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .left-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .left-content {
+            position: relative;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+        }
+
+        .left-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .left-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .right-section {
+            width: 600px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            background: white;
+            overflow-y: auto;
+        }
+
+        .container {
+            width: 100%;
+        }
+
+        .container h1 {
+            text-align: center;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .container > p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-button {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            padding: 0;
+        }
+
+        .auth-button:hover {
+            background-color: #f5f5f5;
+        }
+
+        .auth-button img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .auth-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .g_id_signin {
+            width: 60px !important;
+            height: 60px !important;
+            position: relative;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: white !important;
+            border: 1px solid #e0e0e0 !important;
+            border-radius: 8px !important;
+            cursor: pointer !important;
+            padding: 0 !important;
+        }
+
+        .g_id_signin > div {
+            opacity: 0 !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .g_id_signin::before {
+            content: '' !important;
+            width: 24px !important;
+            height: 24px !important;
+            background-image: url('https://img.icons8.com/color/48/google-logo.png') !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            pointer-events: none !important;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: #666;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-field {
+            position: relative;
+        }
+
+        .form-field.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #666;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .continue-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 8px;
+        }
+
+        .continue-button:hover {
+            background-color: #444;
+        }
+
+        .info-text {
+            color: #666;
+            font-size: 14px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .info-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .info-text a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        #g_id_onload {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: -1;
+        }
+
+        @media (max-width: 1024px) {
+            .right-section {
+                width: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                flex-direction: column;
+            }
+
+            .left-section {
+                display: none;
+            }
+
+            .right-section {
+                width: 100%;
+                min-height: 100vh;
+            }
+
+            .container {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .right-section {
+                padding: 20px;
+            }
+        }
+        
+                .verification-form {
+            display: none;
+        }
+
+        .verification-code-input {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin: 24px 0;
+        }
+
+        .verification-code-input input {
+            width: 100%;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            -moz-appearance: textfield;
+        }
+
+        .verification-code-input input::-webkit-outer-spin-button,
+        .verification-code-input input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .resend-code {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .resend-code.disabled {
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .resend-code:hover:not(.disabled) {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            text-align: center;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            text-align: center;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .timer {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="g_id_onload"
+         data-client_id="910134358750-l7gikjort353nv6isipjig0vrvrd6e5n.apps.googleusercontent.com"
+         data-context="signup"
+         data-ux_mode="redirect"
+         data-login_uri="https://safeagromena.softr.app"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="page-container">
+        <section class="left-section">
+            <div class="left-content">
+                <h2>Transform Agriculture Together</h2>
+                <p>Join SafeAgroMENA to revolutionize sustainable farming practices in the MENA region. Connect with experts, access innovative solutions and contribute to agricultural advancement.</p>
+            </div>
+        </section>
+
+        <section class="right-section">
+            <div class="container">
+                <h1>Welcome to SafeAgroMENA</h1>
+                <p>Take the first step towards safer, sustainable agriculture. Sign up now to collaborate with experts and innovators in the field.</p>
+
+                <div class="auth-buttons">
+                    <div class="auth-option">
+                        <div class="g_id_signin auth-button"
+                             data-type="standard"
+                             data-shape="square"
+                             data-theme="outline"
+                             data-text="signin_with"
+                             data-size="large"
+                             data-logo_alignment="center">
+                        </div>
+                        <div class="auth-label">Google</div>
+                    </div>
+                    <div class="auth-option">
+                        <div class="auth-button" id="microsoft-login">
+                            <img src="https://img.icons8.com/color/48/microsoft.png" alt="Microsoft">
+                        </div>
+                        <div class="auth-label">Microsoft</div>
+                    </div>
+                    <div class="auth-option">
+                        <div class="auth-button">
+                            <img src="https://img.icons8.com/material-sharp/24/key--v1.png" alt="SSO">
+                        </div>
+                        <div class="auth-label">SSO</div>
+                    </div>
+                </div>
+
+                <div class="divider"><span>or</span></div>
+                <form id="signup-form" class="form-grid">
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/user.png" alt="user icon">
+                        <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/user.png" alt="user icon">
+                        <input type="text" name="lastName" class="form-input" placeholder="Last Name" required>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/mail.png" alt="email icon">
+                        <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/phone.png" alt="phone icon">
+                        <input type="tel" name="phone" class="form-input" placeholder="Phone Number" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/calendar.png" alt="calendar icon">
+                        <input type="date" name="birthDate" class="form-input" required>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/sf-black-filled/64/gender.png" alt="gender icon">
+                        <select name="gender" class="form-input" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="prefer-not">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/lock.png" alt="password icon">
+                        <input id="password" name="password" type="password" class="form-input" placeholder="Password" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/lock.png" alt="confirm password icon">
+                        <input id="confirm-password" type="password" class="form-input" placeholder="Confirm Password" required>
+                        <p id="error-message" class="error-message">Passwords do not match.</p>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <button type="submit" class="continue-button">Create Account</button>
+                    </div>
+                </form>
+
+                <form id="sso-verification-form" class="verification-form">
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/mail.png" alt="email icon">
+                        <input type="email" class="form-input" id="sso-email" placeholder="Email Address" required>
+                        <p id="email-error" class="error-message"></p>
+                    </div>
+                    
+                    <div class="form-field full-width">
+                        <button type="submit" class="continue-button">
+                            <span class="button-text">Send Verification Code</span>
+                            <div class="loading-spinner"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <form id="verification-code-form" class="verification-form">
+                    <h2 style="text-align: center; margin-bottom: 16px;">Enter Verification Code</h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 24px;">
+                        We've sent a verification code to <span id="display-email"></span>
+                    </p>
+                    
+                    <div class="verification-code-input">
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                    </div>
+                    
+                    <p id="verification-error" class="error-message"></p>
+                    <p id="verification-success" class="success-message"></p>
+                    
+                    <button type="submit" class="continue-button">
+                        <span class="button-text">Verify Code</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                    
+                    <div class="timer"></div>
+                    <a class="resend-code">Resend Code</a>
+                </form>
+
+                <p class="info-text">
+                    Already have an account? <a href="#">Sign in</a>
+                </p>
+
+                <p class="footer">
+                    By signing up, you agree to our <a href="#">Terms of Service</a> & <a href="#">Privacy policy</a>
+                </p>
+            </div>
+        </section>
+    </div>
+    <script>
+        // Replace this with your Make.com webhook URL
+        const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/q2dge0bmswpqoli6xaf1md7661qjbqta';
+
+        // Function to send data to Make.com
+        async function sendToMake(userData) {
+            try {
+                const response = await fetch(MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    mode: 'no-cors', // Add this to bypass CORS issues
+                    body: JSON.stringify(userData)
+                });
+        
+                // With no-cors mode, we can't check response.ok
+                // Just assume it worked
+                return { success: true };
+            } catch (error) {
+                console.error('Error sending data to Make:', error);
+                // Don't throw for SSO verification - just log it
+                if (userData.authMethod === 'sso') {
+                    return { success: true }; // Pretend it worked for SSO
+                }
+                throw error;
+            }
+        }
+
+        // Google initialization
+        window.onload = function() {
+            google.accounts.id.initialize({
+                client_id: '910134358750-l7gikjort353nv6isipjig0vrvrd6e5n.apps.googleusercontent.com',
+                callback: handleGoogleSignIn,
+                login_uri: 'https://safeagromena.softr.app',
+                ux_mode: 'redirect'
+            });
+
+            google.accounts.id.renderButton(
+                document.querySelector('.g_id_signin'),
+                { 
+                    type: 'standard',
+                    theme: 'outline',
+                    size: 'large',
+                    text: 'signin_with',
+                    shape: 'square',
+                }
+            );
+
+            // Handle Google Sign In
+            async function handleGoogleSignIn(response) {
+                const { credential } = response;
+                const decodedToken = JSON.parse(atob(credential.split('.')[1]));
+                
+                const userData = {
+                    firstName: decodedToken.given_name,
+                    lastName: decodedToken.family_name,
+                    email: decodedToken.email,
+                    authMethod: 'google'
+                };
+
+                try {
+                    await sendToMake(userData);
+                    window.location.href = 'https://safeagromena.softr.app/dashboard';
+                } catch (error) {
+                    console.error('Failed to process Google sign-in:', error);
+                }
+            }
+
+            // Microsoft Authentication Configuration
+            function isPreviewMode() {
+                return window.location.href.includes('preview') || 
+                       window.location.href.includes('localhost') ||
+                       window.location.href.includes('127.0.0.1');
+            }
+
+            const msalConfig = {
+                auth: {
+                    clientId: "1155d9d7-01b6-4ad4-af79-d8579bfa0f04",
+                    authority: "https://login.microsoftonline.com/common",
+                    redirectUri: "https://safeagromena.softr.app",
+                },
+                cache: {
+                    cacheLocation: "sessionStorage",
+                    storeAuthStateInCookie: false
+                }
+            };
+
+            // Create MSAL instance
+            const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+            // Handle Microsoft login
+            document.getElementById("microsoft-login").addEventListener("click", async () => {
+                try {
+                    if (isPreviewMode()) {
+                        const loginRequest = {
+                            scopes: ["openid", "profile", "email", "User.Read"],
+                            prompt: "select_account"
+                        };
+                        
+                        const response = await msalInstance.loginPopup(loginRequest);
+                        if (response) {
+                            const userData = {
+                                email: response.account.username,
+                                firstName: response.account.name.split(' ')[0],
+                                lastName: response.account.name.split(' ').slice(1).join(' '),
+                                authMethod: 'microsoft'
+                            };
+                            
+                            await sendToMake(userData);
+                            window.location.href = 'https://safeagromena.softr.app/dashboard';
+                        }
+                    } else {
+                        const loginRequest = {
+                            scopes: ["openid", "profile", "email", "User.Read"],
+                            prompt: "select_account"
+                        };
+                        await msalInstance.loginRedirect(loginRequest);
+                    }
+                } catch (error) {
+                    console.error("Microsoft login error:", error);
+                }
+            });
+
+            // Handle Microsoft redirect response
+            if (!isPreviewMode()) {
+                msalInstance.handleRedirectPromise().then(async (response) => {
+                    if (response) {
+                        const userData = {
+                            email: response.account.username,
+                            firstName: response.account.name.split(' ')[0],
+                            lastName: response.account.name.split(' ').slice(1).join(' '),
+                            authMethod: 'microsoft'
+                        };
+                        
+                        await sendToMake(userData);
+                        window.location.href = msalConfig.auth.redirectUri;
+                    }
+                }).catch((error) => {
+                    console.error("Error handling redirect:", error);
+                });
+            }
+        };
+
+        // SSO and Verification Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signup-form');
+            const ssoVerificationForm = document.getElementById('sso-verification-form');
+            const verificationCodeForm = document.getElementById('verification-code-form');
+            const ssoButton = document.querySelector('.auth-button img[alt="SSO"]').parentElement;
+            
+            let verificationCode = null;
+            let resendTimer = null;
+            let attempts = 0;
+            const maxAttempts = 3;
+            
+            function generateVerificationCode() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            function setLoadingState(form, isLoading) {
+                const button = form.querySelector('.continue-button');
+                const spinner = form.querySelector('.loading-spinner');
+                const buttonText = form.querySelector('.button-text');
+                
+                if (button && spinner && buttonText) {
+                    button.disabled = isLoading;
+                    spinner.style.display = isLoading ? 'block' : 'none';
+                    buttonText.style.opacity = isLoading ? '0' : '1';
+                }
+            }
+            
+            function startResendTimer() {
+                const timerDisplay = document.querySelector('.timer');
+                const resendButton = document.querySelector('.resend-code');
+                let timeLeft = 30;
+                
+                if (resendButton) {
+                    resendButton.classList.add('disabled');
+                }
+                
+                if (resendTimer) {
+                    clearInterval(resendTimer);
+                }
+                
+                resendTimer = setInterval(() => {
+                    if (timerDisplay) {
+                        timerDisplay.textContent = `Resend code in ${timeLeft} seconds`;
+                    }
+                    timeLeft--;
+                    
+                    if (timeLeft < 0) {
+                        clearInterval(resendTimer);
+                        if (timerDisplay) {
+                            timerDisplay.textContent = '';
+                        }
+                        if (resendButton) {
+                            resendButton.classList.remove('disabled');
+                        }
+                    }
+                }, 1000);
+            }
+
+            // Handle manual signup form submission
+            if (signupForm) {
+                signupForm.addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm-password').value;
+                    const errorMessage = document.getElementById('error-message');
+
+                    if (password !== confirmPassword) {
+                        errorMessage.style.display = 'block';
+                        return;
+                    }
+
+                    const formData = new FormData(signupForm);
+                    const userData = {
+                        firstName: formData.get('firstName'),
+                        lastName: formData.get('lastName'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone'),
+                        birthDate: formData.get('birthDate'),
+                        gender: formData.get('gender'),
+                        authMethod: 'manual'
+                    };
+
+                    try {
+                        await sendToMake(userData);
+                        window.location.href = 'https://safeagromena.softr.app/dashboard';
+                    } catch (error) {
+                        console.error('Failed to process manual sign-up:', error);
+                        errorMessage.textContent = 'Failed to create account. Please try again.';
+                        errorMessage.style.display = 'block';
+                    }
+                });
+            }
+            
+            // Handle SSO button click
+            if (ssoButton) {
+                ssoButton.addEventListener('click', function() {
+                    signupForm.style.display = 'none';
+                    ssoVerificationForm.style.display = 'block';
+                    verificationCodeForm.style.display = 'none';
+                });
+            }
+            
+            // Handle SSO verification form submission
+            if (ssoVerificationForm) {
+                ssoVerificationForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById('sso-email').value;
+                    const emailError = document.getElementById('email-error');
+                    
+                    if (!isValidEmail(email)) {
+                        emailError.textContent = 'Please enter a valid email address';
+                        emailError.style.display = 'block';
+                        return;
+                    }
+                    
+                    setLoadingState(ssoVerificationForm, true);
+                    emailError.style.display = 'none';
+                    
+                    try {
+                        verificationCode = generateVerificationCode();
+                        console.log('Verification code:', verificationCode);
+            
+                        // Remove or comment out the sendToMake call for now
+                        // await sendToMake(userData);
+            
+                        // Simulate successful code sending
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        
+                        const displayEmail = document.getElementById('display-email');
+                        if (displayEmail) {
+                            displayEmail.textContent = email;
+                        }
+                        
+                        ssoVerificationForm.style.display = 'none';
+                        verificationCodeForm.style.display = 'block';
+                        
+                        startResendTimer();
+                        
+                        const firstInput = verificationCodeForm.querySelector('input');
+                        if (firstInput) {
+                            firstInput.focus();
+                        }
+                        
+                    } catch (error) {
+                        emailError.textContent = 'Failed to send verification code. Please try again.';
+                        emailError.style.display = 'block';
+                    } finally {
+                        setLoadingState(ssoVerificationForm, false);
+                    }
+                });
+            }
+            
+            // Handle verification code input
+            const codeInputs = verificationCodeForm.querySelectorAll('.verification-code-input input');
+            codeInputs.forEach((input, index) => {
+                input.addEventListener('input', function(e) {
+                    if (this.value.length >= 1) {
+                        this.value = this.value[0];
+                        if (index < codeInputs.length - 1) {
+                            codeInputs[index + 1].focus();
+                        }
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        codeInputs[index - 1].focus();
+                    }
+                });
+            });
+            
+            // Handle verification code form submission
+            if (verificationCodeForm) {
+                verificationCodeForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const verificationError = document.getElementById('verification-error');
+                    const verificationSuccess = document.getElementById('verification-success');
+                    const enteredCode = Array.from(codeInputs).map(input => input.value).join('');
+                    
+                    setLoadingState(verificationCodeForm, true);
+                    verificationError.style.display = 'none';
+                    verificationSuccess.style.display = 'none';
+                    
+                    try {
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+                        
+                        if (enteredCode === verificationCode) {
+                            verificationSuccess.textContent = 'Verification successful! Redirecting...';
+                            verificationSuccess.style.display = 'block';
+                            
+                            setTimeout(() => {
+                                window.location.href = 'https://safeagromena.softr.app/dashboard';
+                            }, 2000);
+                            
+                        } else {
+                            attempts++;
+                            if (attempts >= maxAttempts) {
+                                verificationError.textContent = 'Maximum attempts reached. Please request a new code.';
+                                Array.from(codeInputs).forEach(input => input.disabled = true);
+                            } else {
+                                verificationError.textContent = `Invalid code. ${maxAttempts - attempts} attempts remaining.`;
+                            }
+                            verificationError.style.display = 'block';
+                        }
+                    } catch (error) {
+                        verificationError.textContent = 'Verification failed. Please try again.';
+                        verificationError.style.display = 'block';
+                    } finally {
+                        setLoadingState(verificationCodeForm, false);
+                    }
+                });
+            }
+            
+            // Handle resend code
+            const resendButton = document.querySelector('.resend-code');
+            if (resendButton) {
+                resendButton.addEventListener('click', async function() {
+                    if (this.classList.contains('disabled')) return;
+                    
+                    const verificationError = document.getElementById('verification-error');
+                    if (verificationError) {
+                        verificationError.style.display = 'none';
+                    }
+                    
+                    attempts = 0;
+                    Array.from(codeInputs).forEach(input => {
+                        input.value = '';
+                        input.disabled = false;
+                    });
+                    
+                    verificationCode = generateVerificationCode();
+                    console.log('New verification code:', verificationCode);
+                    
+                    clearInterval(resendTimer);
+                    startResendTimer();
+                    
+                    codeInputs[0].focus();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

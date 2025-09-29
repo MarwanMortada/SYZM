@@ -598,7 +598,7 @@
             google.accounts.id.initialize({
                 client_id: '910134358750-l7gikjort353nv6isipjig0vrvrd6e5n.apps.googleusercontent.com',
                 callback: handleGoogleSignIn,
-                login_uri: 'https://safeagromena.softr.app',
+                login_uri: 'https://www.google.com/',
                 ux_mode: 'redirect'
             });
 
@@ -627,7 +627,7 @@
 
                 try {
                     await sendToMake(userData);
-                    window.location.href = 'https://safeagromena.softr.app/dashboard';
+                    window.location.href = 'https://www.youtube.com/';
                 } catch (error) {
                     console.error('Failed to process Google sign-in:', error);
                 }
@@ -644,7 +644,7 @@
                 auth: {
                     clientId: "1155d9d7-01b6-4ad4-af79-d8579bfa0f04",
                     authority: "https://login.microsoftonline.com/common",
-                    redirectUri: "https://safeagromena.softr.app",
+                    redirectUri: "https://www.google.com/",
                 },
                 cache: {
                     cacheLocation: "sessionStorage",
@@ -674,7 +674,7 @@
                             };
                             
                             await sendToMake(userData);
-                            window.location.href = 'https://safeagromena.softr.app/dashboard';
+                            window.location.href = 'https://www.youtube.com/';
                         }
                     } else {
                         const loginRequest = {
@@ -799,7 +799,7 @@
 
                     try {
                         await sendToMake(userData);
-                        window.location.href = 'https://safeagromena.softr.app/dashboard';
+                        window.location.href = 'https://www.youtube.com/';
                     } catch (error) {
                         console.error('Failed to process manual sign-up:', error);
                         errorMessage.textContent = 'Failed to create account. Please try again.';
@@ -908,7 +908,7 @@
                             verificationSuccess.style.display = 'block';
                             
                             setTimeout(() => {
-                                window.location.href = 'https://safeagromena.softr.app/dashboard';
+                                window.location.href = 'https://www.youtube.com/';
                             }, 2000);
                             
                         } else {
@@ -960,6 +960,7 @@
     </script>
 </body>
 </html>
+
 
 
 

@@ -24,4 +24,5 @@ const MSAL_CONFIG = {
 };
 
 // Dashboard redirect URL
-const DASHBOARD_URL = 'https://safeagromena.softr.app/dashboard';
+
+const DASHBOARD_URL = 'https://www.youtube.com/';

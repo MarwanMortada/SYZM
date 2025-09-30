@@ -7,7 +7,7 @@ safeagro-signup/
 │
 ├── index.html                 # Main HTML structure
 ├── README.md                  # This file
-│
+├── IECC Logo.png              # The official logo for the Innovation, Entrepreneurship and Competitiveness Centre (IECC) at Nile University
 ├── css/
 │   ├── styles.css            # Main styles (layout, forms, buttons)
 │   └── responsive.css        # Media queries and responsive design

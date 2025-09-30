@@ -4,7 +4,7 @@
 // Make.com Webhook Configuration
 // ============================================
 // This webhook receives user data from all authentication methods
-const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/tcw8txlr4rp97iahlq7hcfqvq6cpdmio';
+const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/ebqg8sxm53ji14miey5127b0jnhnuub8';
 
 // ============================================
 // Google Sign-In Configuration
@@ -136,4 +136,5 @@ validateConfig();
 //     IS_LOCAL,
 //     DEBUG_MODE
 // };
+
 

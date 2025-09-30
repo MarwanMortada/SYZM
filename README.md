@@ -1,4 +1,4 @@
-# SafeAgroMENA Sign-Up Page
+# IECC WTR (UI) Sign-Up Page
 
 ## Folder Structure
 

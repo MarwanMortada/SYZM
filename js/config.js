@@ -35,9 +35,7 @@ const MSAL_CONFIG = {
         authority: "https://login.microsoftonline.com/common",
         
         // Redirect URI - where Microsoft sends users after login
-        // For local testing, add: "http://localhost" or "http://127.0.0.1"
-        // For production, use your actual domain
-        redirectUri: window.location.origin,
+        redirectUri: "https://marwanmortada.github.io/SafeAgroMENA_SignUp_Page/",
     },
     cache: {
         // Where to store authentication tokens
@@ -54,12 +52,7 @@ const MSAL_CONFIG = {
 // Dashboard / Success Redirect URL
 // ============================================
 // Where users go after successful authentication
-// Change this to your actual dashboard URL when ready
-const DASHBOARD_URL = 'https://www.youtube.com/';
-
-// For production, you might want:
-// const DASHBOARD_URL = 'https://safeagromena.softr.app/dashboard';
-// const DASHBOARD_URL = 'https://yourdomain.com/dashboard';
+const DASHBOARD_URL = 'https://marwanmortada.github.io/SafeAgroMENA_SignUp_Page/going.html';
 
 // ============================================
 // Environment Detection (Optional)
@@ -106,27 +99,27 @@ function validateConfig() {
     }
     
     if (errors.length > 0) {
-        console.error('❌ Configuration Errors:');
+        console.error('Configuration Errors:');
         errors.forEach(error => console.error('  -', error));
         return false;
     }
     
-    console.log('✅ All configurations validated successfully');
+    console.log('All configurations validated successfully');
     return true;
 }
 
 // ============================================
 // Log Configuration Status
 // ============================================
-console.log('📋 SafeAgroMENA Configuration Loaded');
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-console.log('🌐 Environment:', IS_LOCAL ? 'Local' : 'Production');
-console.log('🔗 Dashboard URL:', DASHBOARD_URL);
-console.log('🔧 Debug Mode:', DEBUG_MODE ? 'ON' : 'OFF');
-console.log('📡 Webhook:', MAKE_WEBHOOK_URL ? '✓ Configured' : '✗ Missing');
-console.log('🔐 Google Auth:', GOOGLE_CONFIG.client_id ? '✓ Configured' : '✗ Missing');
-console.log('🔐 Microsoft Auth:', MSAL_CONFIG.auth.clientId ? '✓ Configured' : '✗ Missing');
-console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log('SafeAgroMENA Configuration Loaded');
+console.log('=========================================');
+console.log('Environment:', IS_LOCAL ? 'Local' : 'Production');
+console.log('Dashboard URL:', DASHBOARD_URL);
+console.log('Debug Mode:', DEBUG_MODE ? 'ON' : 'OFF');
+console.log('Webhook:', MAKE_WEBHOOK_URL ? 'Configured' : 'Missing');
+console.log('Google Auth:', GOOGLE_CONFIG.client_id ? 'Configured' : 'Missing');
+console.log('Microsoft Auth:', MSAL_CONFIG.auth.clientId ? 'Configured' : 'Missing');
+console.log('=========================================');
 
 // Validate configuration
 validateConfig();

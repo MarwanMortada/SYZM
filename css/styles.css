@@ -350,6 +350,11 @@ body {
     display: none;
     text-align: center;
     font-weight: 500;
+    width: 100%;
+}
+
+.error-message.full-width {
+    grid-column: 1 / -1;
 }
 
 .success-message {

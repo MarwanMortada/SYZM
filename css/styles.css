@@ -345,15 +345,12 @@ body {
 .error-message {
     color: #dc2626;
     font-size: 14px;
-    margin-top: 8px;
-    margin-bottom: 0;
+    margin: 8px 0 0 0;
+    padding: 0;
     display: none;
     text-align: center;
     font-weight: 500;
     width: 100%;
-}
-
-.error-message.full-width {
     grid-column: 1 / -1;
 }
 

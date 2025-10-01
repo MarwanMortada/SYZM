@@ -346,7 +346,7 @@ body {
     color: #dc2626;
     font-size: 14px;
     margin-top: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     display: none;
     text-align: center;
     font-weight: 500;

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IECC WTR Manager Dashboard</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://alcdn.msauth.net/browser/2.24.0/js/msal-browser.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div id="g_id_onload"
+         data-client_id="910134358750-l7gikjort353nv6isipjig0vrvrd6e5n.apps.googleusercontent.com"
+         data-context="signup"
+         data-ux_mode="redirect"
+         data-login_uri="https://marwanmortada.github.io/SafeAgroMENA_SignUp_Page/going.html"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="page-container">
+        <div class="main-content">
+            <div class="container">
+                <div class="logo-container">
+                    <img src="IECC Logo.png" alt="IECC Logo" class="iecc-logo">
+                </div>
+
+                <div class="welcome-section">
+                    <h1>IECC WTR Manager Access</h1>
+                    <p>Secured access for authorized managers only.</p>
+                </div>
+
+                <div class="auth-buttons">
+                    <div class="auth-option">
+                        <div class="g_id_signin auth-button"
+                             data-type="standard"
+                             data-shape="square"
+                             data-theme="outline"
+                             data-text="signin_with"
+                             data-size="large"
+                             data-logo_alignment="center">
+                        </div>
+                        <div class="auth-label">Google</div>
+                    </div>
+                    <div class="auth-option">
+                        <div class="auth-button" id="microsoft-login">
+                            <img src="https://img.icons8.com/color/48/microsoft.png" alt="Microsoft">
+                        </div>
+                        <div class="auth-label">Microsoft</div>
+                    </div>
+                    <div class="auth-option">
+                        <div class="auth-button" id="sso-button">
+                            <img src="https://img.icons8.com/material-sharp/24/key--v1.png" alt="SSO">
+                        </div>
+                        <div class="auth-label">SSO</div>
+                    </div>
+                </div>
+
+                <div class="divider"><span>or</span></div>
+                
+                <form id="signup-form" class="form-grid">
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/user.png" alt="user icon">
+                        <input type="text" name="firstName" class="form-input" placeholder="First Name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/user.png" alt="user icon">
+                        <input type="text" name="lastName" class="form-input" placeholder="Last Name" required>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/mail.png" alt="email icon">
+                        <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/phone.png" alt="phone icon">
+                        <input type="tel" name="phone" class="form-input" placeholder="Phone Number" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/calendar.png" alt="calendar icon">
+                        <input type="date" name="birthDate" class="form-input" required>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/sf-black-filled/64/gender.png" alt="gender icon">
+                        <select name="gender" class="form-input" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="prefer-not">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/lock.png" alt="password icon">
+                        <input id="password" name="password" type="password" class="form-input" placeholder="Password" required>
+                    </div>
+
+                    <div class="form-field">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/lock.png" alt="confirm password icon">
+                        <input id="confirm-password" type="password" class="form-input" placeholder="Confirm Password" required>
+                        <p id="error-message" class="error-message">Passwords do not match.</p>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <button type="submit" class="continue-button">Create Account</button>
+                    </div>
+                </form>
+
+                <form id="sso-verification-form" class="verification-form">
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/mail.png" alt="email icon">
+                        <input type="email" class="form-input" id="sso-email" placeholder="Email Address" required>
+                        <p id="email-error" class="error-message"></p>
+                    </div>
+                    
+                    <div class="form-field full-width">
+                        <button type="submit" class="continue-button">
+                            <span class="button-text">Send Verification Code</span>
+                            <div class="loading-spinner"></div>
+                        </button>
+                    </div>
+                </form>
+
+                <form id="verification-code-form" class="verification-form">
+                    <h2 style="text-align: center; margin-bottom: 16px; color: #004c8c;">Enter Verification Code</h2>
+                    <p style="text-align: center; color: #666; margin-bottom: 24px;">
+                        We've sent a verification code to <span id="display-email"></span>
+                    </p>
+                    
+                    <div class="verification-code-input">
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                        <input type="number" maxlength="1" required>
+                    </div>
+                    
+                    <p id="verification-error" class="error-message"></p>
+                    <p id="verification-success" class="success-message"></p>
+                    
+                    <button type="submit" class="continue-button">
+                        <span class="button-text">Verify Code</span>
+                        <div class="loading-spinner"></div>
+                    </button>
+                    
+                    <div class="timer"></div>
+                    <a class="resend-code">Resend Code</a>
+                </form>
+
+                <p class="info-text">
+                    <strong>Already have an account?</strong> <a href="signin.html">Sign in</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth-google.js"></script>
+    <script src="js/auth-microsoft.js"></script>
+    <script src="js/auth-manual.js"></script>
+    <script src="js/auth-sso.js"></script>
+</body>
+</html>

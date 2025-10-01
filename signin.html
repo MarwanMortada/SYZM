@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IECC WTR Manager Sign In</title>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://alcdn.msauth.net/browser/2.24.0/js/msal-browser.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div id="g_id_onload"
+         data-client_id="910134358750-l7gikjort353nv6isipjig0vrvrd6e5n.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="redirect"
+         data-login_uri="https://marwanmortada.github.io/SafeAgroMENA_SignUp_Page/going.html"
+         data-auto_prompt="false">
+    </div>
+
+    <div class="page-container">
+        <div class="main-content">
+            <div class="container">
+                <div class="logo-container">
+                    <img src="IECC Logo.png" alt="IECC Logo" class="iecc-logo">
+                </div>
+
+                <div class="welcome-section">
+                    <h1>IECC WTR Manager Access</h1>
+                    <p>Secured access for authorized managers only.</p>
+                </div>
+
+                <div class="auth-buttons">
+                    <div class="auth-option">
+                        <div class="g_id_signin auth-button"
+                             data-type="standard"
+                             data-shape="square"
+                             data-theme="outline"
+                             data-text="signin_with"
+                             data-size="large"
+                             data-logo_alignment="center">
+                        </div>
+                        <div class="auth-label">Google</div>
+                    </div>
+                    <div class="auth-option">
+                        <div class="auth-button" id="microsoft-login">
+                            <img src="https://img.icons8.com/color/48/microsoft.png" alt="Microsoft">
+                        </div>
+                        <div class="auth-label">Microsoft</div>
+                    </div>
+                </div>
+
+                <div class="divider"><span>or</span></div>
+                
+                <form id="signin-form" class="form-grid">
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/mail.png" alt="email icon">
+                        <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="form-field full-width">
+                        <img class="input-icon" src="https://img.icons8.com/material-outlined/24/lock.png" alt="password icon">
+                        <input type="password" name="password" class="form-input" placeholder="Password" required>
+                    </div>
+
+                    <p id="signin-error" class="error-message"></p>
+
+                    <div class="form-field full-width">
+                        <button type="submit" class="continue-button">Sign In</button>
+                    </div>
+                </form>
+
+                <p class="info-text">
+                    <strong>Don't have an account?</strong> <a href="index.html">Sign up</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth-google.js"></script>
+    <script src="js/auth-microsoft.js"></script>
+    <script src="js/auth-signin.js"></script>
+</body>
+</html>
